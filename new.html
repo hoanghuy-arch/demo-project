@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Công Hiệu Suất Nhà Vận Chuyển</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Teko:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1a3a6b;
+    --blue: #1e56c8;
+    --blue-bright: #2e7dff;
+    --blue-pale: #e8f0fd;
+    --accent: #00d4ff;
+    --green: #00c896;
+    --green-pale: #e6faf5;
+    --red: #ff4d6d;
+    --red-pale: #fff0f3;
+    --orange: #ff8c00;
+    --yellow: #ffd100;
+    --text-primary: #0a1628;
+    --text-secondary: #5a6a85;
+    --text-light: #8fa0b8;
+    --border: #dde4f0;
+    --surface: #ffffff;
+    --surface-2: #f4f7fd;
+    --shadow-sm: 0 2px 8px rgba(10,22,40,.07);
+    --shadow-md: 0 4px 20px rgba(10,22,40,.12);
+    --shadow-lg: 0 8px 40px rgba(10,22,40,.18);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 200px;
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: var(--blue);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .logo-icon svg { width: 22px; height: 22px; fill: white; }
+
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .sidebar-brand {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin-top: 4px;
+  }
+
+  .sidebar-section {
+    padding: 16px 12px 4px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,.35);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 0 4px;
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all .2s;
+    color: rgba(255,255,255,.6);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,.08); color: white; }
+  .nav-item.active { background: var(--blue); color: white; }
+
+  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  .sidebar-divider { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: 8px 12px; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .data-date {
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    line-height: 1.5;
+  }
+
+  .data-date strong { color: rgba(255,255,255,.7); display: block; }
+
+  /* MAIN */
+  .main {
+    margin-left: 200px;
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .page-title h1 {
+    font-family: 'Teko', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: .02em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .header-filters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .filter-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .filter-select {
+    appearance: none;
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6a85' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 32px 7px 12px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color .2s;
+    min-width: 160px;
+  }
+
+  .filter-select:focus { outline: none; border-color: var(--blue); }
+
+  /* CONTENT */
+  .content { padding: 24px 28px; flex: 1; }
+
+  /* SUMMARY CARDS */
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .summary-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--border);
+    transition: all .25s;
+    cursor: pointer;
+  }
+
+  .summary-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+  .summary-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .summary-icon svg { width: 26px; height: 26px; }
+
+  .summary-icon.blue { background: var(--blue-pale); color: var(--blue); }
+  .summary-icon.green { background: var(--green-pale); color: var(--green); }
+  .summary-icon.red { background: var(--red-pale); color: var(--red); }
+
+  .summary-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .summary-value {
+    font-family: 'Teko', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .summary-value.blue { color: var(--blue); }
+  .summary-value.green { color: var(--green); }
+  .summary-value.red { color: var(--red); }
+
+  .summary-sub {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .badge-best {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--green-pale);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .badge-worst {
+    background: var(--red-pale);
+    color: var(--red);
+  }
+
+  /* CHARTS GRID */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .chart-card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .chart-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .chart-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .chart-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .btn-expand {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .btn-expand:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); }
+
+  .chart-body { padding: 16px 18px; }
+
+  /* BAR ROWS */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background .15s;
+  }
+
+  .bar-row:hover { background: var(--surface-2); }
+
+  .bar-rank {
+    width: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .bar-rank.top { color: var(--blue); }
+
+  .carrier-logo-sm {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--navy);
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .bar-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 80px;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .8s cubic-bezier(.25,.46,.45,.94);
+  }
+
+  .bar-fill.primary { background: var(--navy); }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.red { background: var(--red); }
+  .bar-fill.orange { background: var(--orange); }
+
+  .bar-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  .bar-divider {
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-light);
+    margin: 4px 0 10px;
+    letter-spacing: 2px;
+  }
+
+  .bar-last {
+    opacity: .6;
+  }
+
+  .chart-footer {
+    padding: 10px 18px 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chart-avg {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .chart-avg strong { color: var(--blue); }
+
+  .btn-view-all {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap .2s;
+  }
+
+  .btn-view-all:hover { gap: 7px; }
+
+  /* DUAL BAR (loss/damage) */
+  .dual-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background .15s;
+  }
+
+  .dual-bar-row:hover { background: var(--surface-2); }
+
+  .dual-bars {
+    flex: 1;
+    display: flex;
+    gap: 3px;
+  }
+
+  .dual-bar-track {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    position: relative;
+    flex: 1;
+  }
+
+  .dual-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 38px;
+    text-align: right;
+  }
+
+  .legend-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,22,40,.55);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: white;
+    border-radius: 16px;
+    width: 680px;
+    max-width: 95vw;
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px) scale(.97);
+    transition: transform .25s cubic-bezier(.25,.46,.45,.94);
+  }
+
+  .modal-overlay.open .modal { transform: none; }
+
+  .modal-header {
+    padding: 22px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 5;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal-title {
+    font-family: 'Teko', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+
+  .modal-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+  .modal-close {
+    width: 32px; height: 32px;
+    border: none;
+    background: var(--surface-2);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary);
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--red-pale); color: var(--red); }
+
+  .modal-body { padding: 20px 24px 24px; }
+
+  .modal-filter-row {
+    margin-bottom: 18px;
+  }
+
+  .modal-filter-row label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .metric-select {
+    appearance: none;
+    background: var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6a85' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 32px 8px 12px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    min-width: 220px;
+    transition: border-color .2s;
+  }
+
+  .metric-select:focus { outline: none; border-color: var(--blue); }
+
+  .metric-desc {
+    background: var(--surface-2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0 18px;
+  }
+
+  .metric-desc .metric-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .metric-desc .metric-def {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  .modal-table {
+    width: 100%;
+  }
+
+  .modal-table-header {
+    display: grid;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .modal-table-row {
+    display: grid;
+    padding: 10px 10px;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s;
+    gap: 8px;
+  }
+
+  .modal-table-row:hover { background: var(--surface-2); }
+
+  .modal-rank {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+
+  .modal-rank.gold { color: #f5a623; }
+  .modal-rank.silver { color: #9b9b9b; }
+  .modal-rank.bronze { color: #c57b45; }
+
+  .modal-carrier {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .carrier-logo-md {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--navy);
+    border: 1px solid var(--border);
+  }
+
+  .modal-bar-track {
+    height: 10px;
+    background: var(--surface-2);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .modal-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--navy);
+    transition: width 1s cubic-bezier(.25,.46,.45,.94);
+  }
+
+  .modal-bar-fill.last { background: var(--red); }
+
+  .modal-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: right;
+  }
+
+  .modal-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* CARRIER DETAIL PAGE */
+  .carrier-page {
+    display: none;
+    padding: 24px 28px;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .carrier-page.active { display: flex; }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: gap .2s;
+  }
+
+  .back-btn:hover { gap: 9px; }
+
+  .carrier-hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .carrier-logo-lg {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--navy);
+    border: 2px solid var(--border);
+  }
+
+  .carrier-hero-name {
+    font-family: 'Teko', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--navy);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .carrier-hero-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .detail-card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+  }
+
+  .detail-metric-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .detail-value {
+    font-family: 'Teko', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--navy);
+  }
+
+  .detail-value.good { color: var(--green); }
+  .detail-value.warn { color: var(--orange); }
+
+  .detail-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  .trend-up { color: var(--green); }
+  .trend-down { color: var(--red); }
+
+  .detail-sparkline {
+    height: 60px;
+    margin-top: 12px;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .spark-bar {
+    flex: 1;
+    background: var(--blue-pale);
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    transition: background .2s;
+    cursor: pointer;
+  }
+
+  .spark-bar:hover { background: var(--blue); }
+
+  .spark-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  .market-compare {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+
+  .market-compare h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .compare-item { text-align: center; }
+
+  .compare-val {
+    font-family: 'Teko', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .compare-label { font-size: 11px; color: var(--text-secondary); line-height: 1.3; margin-bottom: 4px; }
+
+  .compare-vs {
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  .vs-better { color: var(--green); }
+  .vs-worse { color: var(--red); }
+
+  .highlights-card {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+  }
+
+  .highlights-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+
+  .highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .highlight-item:last-child { border-bottom: none; }
+
+  .hl-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hl-icon svg { width: 18px; height: 18px; }
+
+  .hl-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .hl-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .charts-grid { grid-template-columns: 1fr 1fr; }
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .content > * { animation: fadeIn .4s ease both; }
+
+  .bar-fill { width: 0; }
+
+  .tip {
+    display: inline-flex;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    margin-left: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="sidebar-title">Hệ thống</div>
+    <div class="sidebar-brand">Công Hiệu Suất<br>Nhà Vận Chuyển</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Phân Tích</div>
+    <div class="nav-item active" onclick="showPage('performance')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6l4-4 4 4M8 18l4 4 4-4M3 12h18"/></svg>
+      Điểm hiệu suất
+    </div>
+    <div class="nav-item" onclick="showPage('loss')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Tổn thất / Hư hỏng
+    </div>
+    <div class="nav-item" onclick="showPage('report')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
+      Báo cáo
+    </div>
+  </div>
+
+  <hr class="sidebar-divider">
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Hệ Thống</div>
+    <div class="nav-item" onclick="showPage('kpi')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      Cấu hình KPI
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="data-date">
+      <strong>Dữ liệu tính đến:</strong>
+      31/05/2024
+    </div>
+  </div>
+</aside>
+
+<!-- PERFORMANCE PAGE -->
+<div class="main" id="page-performance" style="display:flex; flex-direction:column;">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Điểm Hiệu Suất Nhà Vận Chuyển</h1>
+      <div class="page-subtitle">Đánh giá hiệu suất của các nhà vận chuyển trên các chỉ số trọng yếu</div>
+    </div>
+    <div class="header-filters">
+      <div class="filter-group">
+        <label>Chọn tuyến đường:</label>
+        <select class="filter-select">
+          <option>Châu Á – Bắc Mỹ</option>
+          <option>Châu Á – Châu Âu</option>
+          <option>Trans-Pacific</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Chọn thời gian:</label>
+        <select class="filter-select">
+          <option>Tháng 01/2024 – Tháng 05/2024</option>
+          <option>Tháng 06/2023 – Tháng 12/2023</option>
+          <option>Năm 2023</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" id="perf-content">
+    <!-- Summary -->
+    <div class="summary-row">
+      <div class="summary-card" onclick="openCarrierDetail('TOTAL')">
+        <div class="summary-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div>
+          <div class="summary-label">Tổng số carrier</div>
+          <div class="summary-value blue">24</div>
+          <div class="summary-sub">carrier đang hoạt động</div>
+        </div>
+      </div>
+      <div class="summary-card" onclick="openCarrierDetail('MAERSK')">
+        <div class="summary-icon green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15c-2.67 4-8 4-8 4s0-5.33 4-8"/><path d="M12 15c2.67-4 8-4 8-4s0 5.33-4 8"/><path d="M12 9c-2.67-4-8-4-8-4s0 5.33 4 8"/><circle cx="12" cy="12" r="1"/></svg>
+        </div>
+        <div>
+          <div class="summary-label">Nhà vận chuyển tốt nhất (Tổng thể)</div>
+          <div class="summary-value green">MAERSK</div>
+          <div class="badge-best">⭐ Điểm tổng thể: 91,0 / 100</div>
+        </div>
+      </div>
+      <div class="summary-card" onclick="openCarrierDetail('ZIM')">
+        <div class="summary-icon red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="summary-label">Nhà vận chuyển kém nhất (Tổng thể)</div>
+          <div class="summary-value red">ZIM</div>
+          <div class="badge-best badge-worst">⚠ Điểm tổng thể: 64,8 / 100</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <!-- OTD Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">OTD (%) theo nhà vận chuyển</div>
+            <div class="chart-subtitle">(Tuyến: Châu Á – Bắc Mỹ)</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('otd')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name">MAERSK</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:93.1%"></div></div>
+            <div class="bar-value">93,1%</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name">MSC</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:88.5%"></div></div>
+            <div class="bar-value">88,5%</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name">CMA CGM</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:85.2%"></div></div>
+            <div class="bar-value">85,2%</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row bar-last" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name">ZIM</div>
+            <div class="bar-track"><div class="bar-fill red" style="width:72.3%"></div></div>
+            <div class="bar-value" style="color:var(--red)">72,3%</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">OTD trung bình tuyến: <strong>86,7%</strong></div>
+          <button class="btn-view-all" onclick="openModal('otd')">Xem tất cả →</button>
+        </div>
+      </div>
+
+      <!-- Performance Score -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Điểm hiệu suất theo tuyến đường</div>
+            <div class="chart-subtitle">So sánh hiệu suất trên các tuyến đường khác nhau</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('score')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name">MAERSK</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:91%"></div></div>
+            <div class="bar-value">91,0</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name">MSC</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:86.2%"></div></div>
+            <div class="bar-value">86,2</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name">CMA CGM</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:82.4%"></div></div>
+            <div class="bar-value">82,4</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row bar-last" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name">ZIM</div>
+            <div class="bar-track"><div class="bar-fill red" style="width:64.8%"></div></div>
+            <div class="bar-value" style="color:var(--red)">64,8</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Điểm (Thang 100)</div>
+          <button class="btn-view-all" onclick="openModal('score')">Xem tất cả →</button>
+        </div>
+      </div>
+
+      <!-- Damage/Loss -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Tỷ lệ Tổn thất / Hư hỏng (%)</div>
+            <div class="chart-subtitle">(Tuyến: Châu Á – Bắc Mỹ)</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('damage')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="legend-row">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Hư hỏng (Xanh)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Thất lạc (Đỏ)</div>
+          </div>
+          <div class="dual-bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name" style="min-width:72px">MAERSK</div>
+            <div class="dual-bars">
+              <div class="dual-bar-track" style="background:var(--blue-pale);border-radius:4px;height:8px;flex:0.6"><div style="height:8px;background:var(--blue);border-radius:4px;width:100%"></div></div>
+              <div class="dual-bar-track" style="background:var(--red-pale);border-radius:4px;height:8px;flex:0.12"><div style="height:8px;background:var(--red);border-radius:4px;width:100%"></div></div>
+            </div>
+            <div class="dual-value">1,8%</div>
+          </div>
+          <div class="dual-bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name" style="min-width:72px">MSC</div>
+            <div class="dual-bars">
+              <div class="dual-bar-track" style="background:var(--blue-pale);border-radius:4px;height:8px;flex:0.9"><div style="height:8px;background:var(--blue);border-radius:4px;width:100%"></div></div>
+              <div class="dual-bar-track" style="background:var(--red-pale);border-radius:4px;height:8px;flex:0.5"><div style="height:8px;background:var(--red);border-radius:4px;width:100%"></div></div>
+            </div>
+            <div class="dual-value">2,4%</div>
+          </div>
+          <div class="dual-bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name" style="min-width:72px">CMA CGM</div>
+            <div class="dual-bars">
+              <div class="dual-bar-track" style="background:var(--blue-pale);border-radius:4px;height:8px;flex:1.1"><div style="height:8px;background:var(--blue);border-radius:4px;width:100%"></div></div>
+              <div class="dual-bar-track" style="background:var(--red-pale);border-radius:4px;height:8px;flex:0.8"><div style="height:8px;background:var(--red);border-radius:4px;width:100%"></div></div>
+            </div>
+            <div class="dual-value">2,9%</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="dual-bar-row bar-last" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name" style="min-width:72px">ZIM</div>
+            <div class="dual-bars">
+              <div class="dual-bar-track" style="background:var(--red-pale);border-radius:4px;height:8px;flex:3.8"><div style="height:8px;background:var(--red);border-radius:4px;width:100%"></div></div>
+              <div class="dual-bar-track" style="background:var(--orange);opacity:.4;border-radius:4px;height:8px;flex:4.5"><div style="height:8px;background:var(--orange);border-radius:4px;width:100%"></div></div>
+            </div>
+            <div class="dual-value" style="color:var(--red)">8,3%</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Tỷ lệ hư hỏng TB: <strong>1,1%</strong> &nbsp;|&nbsp; Thất lạc TB: <strong style="color:var(--red)">3,8%</strong></div>
+          <button class="btn-view-all" onclick="openModal('damage')">Xem tất cả →</button>
+        </div>
+      </div>
+
+      <!-- Delivery Time -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Thời gian giao hàng TB (Ngày)</div>
+            <div class="chart-subtitle">(Tuyến: Châu Á – Bắc Mỹ)</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('delivery')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:8px 10px;align-items:center;font-size:12px;font-weight:600;color:var(--text-secondary);padding:0 8px 8px;border-bottom:1px solid var(--border);margin-bottom:8px;">
+            <span>Hạng</span><span>Nhà vận chuyển</span><span>TB (ngày)</span><span>So sánh</span>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MSC')" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0 10px;">
+            <div class="bar-rank top">1</div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div><span style="font-size:13px;font-weight:600">MSC</span></div>
+            <div style="font-size:13px;font-weight:700">26,2</div>
+            <div style="font-size:12px;color:var(--green);font-weight:600">↓ 1,2</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0 10px;">
+            <div class="bar-rank top">2</div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div><span style="font-size:13px;font-weight:600">MAERSK</span></div>
+            <div style="font-size:13px;font-weight:700">27,1</div>
+            <div style="font-size:12px;color:var(--green);font-weight:600">↓ 0,7</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0 10px;">
+            <div class="bar-rank top">3</div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div><span style="font-size:13px;font-weight:600">CMA CGM</span></div>
+            <div style="font-size:13px;font-weight:700">27,8</div>
+            <div style="font-size:12px;color:var(--red);font-weight:600">↑ 0,3</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row bar-last" onclick="openCarrierDetail('ZIM')" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0 10px;">
+            <div class="bar-rank">24</div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div><span style="font-size:13px;font-weight:600;color:var(--red)">ZIM</span></div>
+            <div style="font-size:13px;font-weight:700;color:var(--red)">31,4</div>
+            <div style="font-size:12px;color:var(--red);font-weight:600">↑ 2,1</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Thời gian giao hàng TB tuyến: <strong>27,8 ngày</strong></div>
+          <button class="btn-view-all" onclick="openModal('delivery')">Xem tất cả →</button>
+        </div>
+      </div>
+
+      <!-- Cost -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Chi phí trung bình / lô (US$)</div>
+            <div class="chart-subtitle">(Tuyến: Châu Á – Bắc Mỹ)</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('cost')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name">MSC</div>
+            <div class="bar-track"><div class="bar-fill green" style="width:85%"></div></div>
+            <div class="bar-value">$2.280</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name">MAERSK</div>
+            <div class="bar-track"><div class="bar-fill green" style="width:90%"></div></div>
+            <div class="bar-value">$2.420</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name">CMA CGM</div>
+            <div class="bar-track"><div class="bar-fill green" style="width:78%"></div></div>
+            <div class="bar-value">$2.210</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row bar-last" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name">ZIM</div>
+            <div class="bar-track"><div class="bar-fill red" style="width:100%"></div></div>
+            <div class="bar-value" style="color:var(--red)">$2.680</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Chi phí TB tuyến: <strong>$2.345</strong></div>
+          <button class="btn-view-all" onclick="openModal('cost')">Xem tất cả →</button>
+        </div>
+      </div>
+
+      <!-- Invoice Accuracy -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Độ chính xác hóa đơn (%)</div>
+            <div class="chart-subtitle">(Tuyến: Châu Á – Bắc Mỹ)</div>
+          </div>
+          <button class="btn-expand" onclick="openModal('invoice')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name">MAERSK</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:98.2%"></div></div>
+            <div class="bar-value">98,2%</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name">MSC</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:95.6%"></div></div>
+            <div class="bar-value">95,6%</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name">CMA CGM</div>
+            <div class="bar-track"><div class="bar-fill primary" style="width:93.1%"></div></div>
+            <div class="bar-value">93,1%</div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row bar-last" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name">ZIM</div>
+            <div class="bar-track"><div class="bar-fill red" style="width:87.4%"></div></div>
+            <div class="bar-value" style="color:var(--red)">87,4%</div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Độ chính xác hóa đơn TB tuyến: <strong>94,1%</strong></div>
+          <button class="btn-view-all" onclick="openModal('invoice')">Xem tất cả →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOSS PAGE -->
+<div class="main" id="page-loss" style="display:none; flex-direction:column;">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Báo Cáo Hư Hỏng / Thất Lạc</h1>
+      <div class="page-subtitle">Tổng quan về hiệu suất hư hỏng và thất lạc của lô hàng</div>
+    </div>
+    <div class="header-filters">
+      <div class="filter-group">
+        <label>Chọn tuyến đường:</label>
+        <select class="filter-select"><option>Châu Á – Bắc Mỹ</option></select>
+      </div>
+      <div class="filter-group">
+        <label>Chọn thời gian:</label>
+        <select class="filter-select"><option>Tháng 01/2024 – Tháng 05/2024</option></select>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="summary-row" style="grid-template-columns:repeat(5,1fr)">
+      <div class="summary-card" style="flex-direction:column;align-items:flex-start">
+        <div class="summary-icon blue" style="margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+        <div class="summary-label">Tổng số carrier</div>
+        <div class="summary-value blue">24</div>
+      </div>
+      <div class="summary-card" style="flex-direction:column;align-items:flex-start">
+        <div class="summary-label">Tổng số vụ hư hỏng</div>
+        <div class="summary-value" style="color:var(--navy)">400</div>
+        <div class="summary-sub">Tỷ lệ hư hỏng: 1,6%</div>
+        <div style="font-size:11px;color:var(--red);font-weight:600;margin-top:4px">↑ 0,4 điểm %</div>
+      </div>
+      <div class="summary-card" style="flex-direction:column;align-items:flex-start">
+        <div class="summary-label">Tổng số vụ thất lạc</div>
+        <div class="summary-value red">120</div>
+        <div class="summary-sub">Tỷ lệ thất lạc: 0,5%</div>
+      </div>
+      <div class="summary-card" style="flex-direction:column;align-items:flex-start">
+        <div class="summary-label">Tổng giá trị thiệt hại</div>
+        <div class="summary-value" style="color:var(--navy)">$380K</div>
+        <div class="summary-sub">Chi phí TB / vụ: $1.583</div>
+        <div style="font-size:11px;color:var(--red);font-weight:600;margin-top:4px">↑ 6,2%</div>
+      </div>
+      <div class="summary-card" style="flex-direction:column;align-items:flex-start">
+        <div class="summary-label">Tỷ lệ bồi thường</div>
+        <div class="summary-value green">72%</div>
+        <div style="font-size:11px;color:var(--green);font-weight:600;margin-top:4px">↑ 4,5 điểm %</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div class="chart-card" style="border-left:4px solid var(--red)">
+        <div class="chart-body">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="color:var(--red);font-size:22px">⚠</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px">Vấn đề đáng chú ý nhất</div>
+              <div style="font-size:13px;color:var(--text-primary)"><strong>ZIM</strong> có tỷ lệ hư hỏng cao nhất (3,8%) và tỷ lệ thất lạc cao nhất (1,0%) trong tất cả nhà vận chuyển.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card" style="border-left:4px solid var(--green)">
+        <div class="chart-body">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="font-size:22px">🏆</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:4px">Hiệu suất tốt nhất</div>
+              <div style="font-size:13px;color:var(--text-primary)"><strong>Maersk</strong> có tỷ lệ hư hỏng thấp nhất (0,6%) và tỷ lệ thất lạc thấp nhất (0,1%) trong kỳ.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Tỷ lệ hư hỏng & thất lạc theo nhà vận chuyển</div>
+            <div class="chart-subtitle">Khu vực: Đại Dương</div>
+          </div>
+          <button class="btn-expand" onclick="openDamageDetailModal()" title="Xem chi tiết bảng">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <div class="chart-body">
+          <div class="legend-row">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Tỷ lệ hư hỏng (%)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Tỷ lệ thất lạc (%)</div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MAERSK')">
+            <div class="bar-rank top">1</div>
+            <div class="carrier-logo-sm" style="background:#003E80;color:white;font-size:6px">MSK</div>
+            <div class="bar-name">MAERSK</div>
+            <div style="flex:1;display:flex;gap:4px">
+              <div style="flex:0.6;height:8px;background:var(--blue);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700">0,6%</span>
+              <div style="flex:0.1;height:8px;background:var(--red);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--red)">0,1%</span>
+            </div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('MSC')">
+            <div class="bar-rank top">2</div>
+            <div class="carrier-logo-sm" style="background:#2A2E87;color:white;font-size:6px">MSC</div>
+            <div class="bar-name">MSC</div>
+            <div style="flex:1;display:flex;gap:4px">
+              <div style="flex:0.9;height:8px;background:var(--blue);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700">0,9%</span>
+              <div style="flex:1.5;height:8px;background:var(--red);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--red)">1,5%</span>
+            </div>
+          </div>
+          <div class="bar-row" onclick="openCarrierDetail('CMA')">
+            <div class="bar-rank top">3</div>
+            <div class="carrier-logo-sm" style="background:#E84142;color:white;font-size:5px">CMA</div>
+            <div class="bar-name">CMA CGM</div>
+            <div style="flex:1;display:flex;gap:4px">
+              <div style="flex:1.1;height:8px;background:var(--blue);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700">1,1%</span>
+              <div style="flex:1.8;height:8px;background:var(--red);border-radius:4px;opacity:.8"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--red)">1,8%</span>
+            </div>
+          </div>
+          <div class="bar-divider">···</div>
+          <div class="bar-row" onclick="openCarrierDetail('ZIM')">
+            <div class="bar-rank">24</div>
+            <div class="carrier-logo-sm" style="background:#1E3A8A;color:white;font-size:7px">ZIM</div>
+            <div class="bar-name">ZIM</div>
+            <div style="flex:1;display:flex;gap:4px">
+              <div style="flex:3.8;height:8px;background:var(--red);border-radius:4px;"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--red)">3,8%</span>
+              <div style="flex:4.5;height:8px;background:var(--orange);border-radius:4px;"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--orange)">4,5%</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <div class="chart-avg">Tỷ lệ hư hỏng TB: <strong>1,6%</strong> &nbsp;|&nbsp; Thất lạc TB: <strong style="color:var(--red)">0,5%</strong></div>
+          <button class="btn-view-all" onclick="openDamageDetailModal()">Nhấn vào biểu đồ →</button>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Chi phí thiệt hại theo nhà vận chuyển (US$)</div>
+          <div class="chart-subtitle">Tổng chi phí thiệt hại (Loss Value)</div>
+        </div>
+        <div class="chart-body" style="padding-top:8px">
+          <div style="display:flex;align-items:flex-end;gap:16px;height:140px;padding:0 8px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer" onclick="openCarrierDetail('MAERSK')">
+              <span style="font-size:12px;font-weight:700;color:var(--text-primary)">$23K</span>
+              <div style="width:100%;height:20px;background:var(--blue);border-radius:4px 4px 0 0;transition:opacity .2s;opacity:.8" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.8"></div>
+              <span style="font-size:11px;font-weight:600;color:var(--text-secondary)">Maersk</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer" onclick="openCarrierDetail('MSC')">
+              <span style="font-size:12px;font-weight:700;color:var(--text-primary)">$88K</span>
+              <div style="width:100%;height:78px;background:var(--blue);border-radius:4px 4px 0 0;transition:opacity .2s;opacity:.8" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.8"></div>
+              <span style="font-size:11px;font-weight:600;color:var(--text-secondary)">MSC</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer" onclick="openCarrierDetail('CMA')">
+              <span style="font-size:12px;font-weight:700;color:var(--text-primary)">$61K</span>
+              <div style="width:100%;height:54px;background:var(--blue);border-radius:4px 4px 0 0;transition:opacity .2s;opacity:.8" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.8"></div>
+              <span style="font-size:11px;font-weight:600;color:var(--text-secondary)">CMA CGM</span>
+            </div>
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-light)">···</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer" onclick="openCarrierDetail('ZIM')">
+              <span style="font-size:12px;font-weight:700;color:var(--red)">$142K</span>
+              <div style="width:100%;height:126px;background:var(--red);border-radius:4px 4px 0 0;transition:opacity .2s;opacity:.8" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.8"></div>
+              <span style="font-size:11px;font-weight:700;color:var(--red)">ZIM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT PAGE -->
+<div class="main" id="page-report" style="display:none; flex-direction:column;">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Báo Cáo Tổng Hợp</h1>
+      <div class="page-subtitle">Xuất và quản lý báo cáo hiệu suất</div>
+    </div>
+  </div>
+  <div class="content" style="display:flex;align-items:center;justify-content:center;flex:1">
+    <div style="text-align:center;color:var(--text-light)">
+      <div style="font-size:48px;margin-bottom:12px">📊</div>
+      <div style="font-size:16px;font-weight:600;color:var(--text-secondary)">Chức năng đang phát triển</div>
+      <div style="font-size:13px;margin-top:4px">Vui lòng quay lại sau</div>
+    </div>
+  </div>
+</div>
+
+<!-- CARRIER DETAIL PAGE -->
+<div class="main" id="page-carrier" style="display:none; flex-direction:column;">
+  <div class="content" id="carrier-content"></div>
+</div>
+
+<!-- KPI CONFIG PAGE -->
+<div class="main" id="page-kpi" style="display:none; flex-direction:column;">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Cấu Hình KPI & Trọng Số</h1>
+      <div class="page-subtitle">Quản lý các chỉ số KPI và trọng số đánh giá hiệu suất nhà vận chuyển</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:13px;color:var(--text-secondary)">NGƯỜI DÙNG: <strong>ANH ANALYST</strong></div>
+    </div>
+  </div>
+  <div class="content" style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;">
+    <!-- LEFT: KPI Table -->
+    <div>
+      <div style="background:var(--blue-pale);border:1px solid #c3d6f7;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--blue);display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Lưu ý: Tổng trọng số (Total Weight) phải bằng 100%.
+      </div>
+      <button onclick="openKpiEdit(null)" style="background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);padding:9px 16px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        THÊM KPI MỚI
+      </button>
+
+      <div style="background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr 1.5fr 100px 1fr 120px;padding:12px 16px;border-bottom:2px solid var(--border);font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;gap:12px;">
+          <span>Tên KPI</span><span>Mô tả</span><span>Trọng số (%)</span><span>Ngưỡng mục tiêu (Tham chiếu)</span><span>Thao tác</span>
+        </div>
+        <div id="kpi-list"></div>
+        <div style="padding:14px 16px;border-top:2px solid var(--border);background:var(--surface-2);display:flex;justify-content:flex-end;">
+          <div style="font-size:14px;font-weight:700;color:var(--navy)">Tổng trọng số (Total Weight): <span id="total-weight" style="color:var(--green)">100%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: KPI Edit Form -->
+    <div id="kpi-edit-panel" style="background:white;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:20px;position:sticky;top:80px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)">CHỈNH SỬA KPI: <span id="edit-kpi-title" style="color:var(--navy)">---</span></div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Tên KPI:</label>
+          <input id="edit-name" type="text" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;color:var(--text-primary);" placeholder="Nhập tên KPI...">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Mô tả:</label>
+          <textarea id="edit-desc" rows="3" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;color:var(--text-primary);resize:vertical;" placeholder="Mô tả KPI..."></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Trọng số (%):</label>
+            <input id="edit-weight" type="number" min="0" max="100" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;" placeholder="0">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Ngưỡng mục tiêu:</label>
+            <select id="edit-threshold" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;appearance:none;background:white url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6a85' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\") no-repeat right 10px center;">
+              <option>>95%</option><option>>90%</option><option>>85%</option><option>≤25 ngày</option><option>≤30 ngày</option><option>&lt;1%</option><option>&lt;2%</option><option>≥98%</option><option>≥95%</option><option>≤ 2.350 USS$ / lô hàng</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Công thức tính:</label>
+          <select id="edit-formula" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;appearance:none;background:white url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6a85' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\") no-repeat right 10px center;">
+            <option>Số đơn giao đúng hạn / Tổng số đơn</option>
+            <option>Thời gian vận chuyển trung bình</option>
+            <option>Số đơn hư hỏng / Tổng số đơn</option>
+            <option>Tổng chi phí / Tổng số lô hàng</option>
+            <option>Số hóa đơn chính xác / Tổng số hóa đơn</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px;">Giải thích công thức:</label>
+          <textarea id="edit-formula-desc" rows="2" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-family:inherit;font-size:13px;color:var(--text-primary);resize:vertical;" placeholder="Giải thích cách tính..."></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:4px;">
+          <button onclick="saveKpi()" style="background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);padding:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;">Lưu</button>
+          <button onclick="cancelKpiEdit()" style="background:white;color:var(--text-secondary);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DAMAGE DETAIL MODAL -->
+<div class="modal-overlay" id="damage-modal-overlay" onclick="if(event.target===this)closeDamageModal()" style="z-index:300;">
+  <div class="modal" style="width:760px;max-width:95vw;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Chi Tiết Tỷ Lệ Hư Hỏng & Thất Lạc Theo Nhà Vận Chuyển</div>
+        <div class="modal-subtitle">So sánh số đơn hư hỏng và thất lạc của các nhà vận chuyển trong giai đoạn <span style="color:var(--blue);font-weight:600">Tháng 01/2024 – Tháng 05/2024</span></div>
+      </div>
+      <button class="modal-close" onclick="closeDamageModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="padding:0 0 20px;">
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--surface-2);border-bottom:2px solid var(--border);">
+              <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;">#</th>
+              <th style="padding:11px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;">Nhà vận chuyển</th>
+              <th style="padding:11px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;">Số đơn hư hỏng</th>
+              <th style="padding:11px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;">Tỷ lệ hư hỏng (%)</th>
+              <th style="padding:11px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em;">Số đơn thất lạc</th>
+              <th style="padding:11px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em;">Tỷ lệ thất lạc (%)</th>
+            </tr>
+          </thead>
+          <tbody id="damage-detail-tbody">
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:12px 16px 0;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12px;color:var(--text-secondary)" id="damage-page-info">Hiển thị 1 – 4 / 24 nhà vận chuyển</div>
+        <div style="display:flex;align-items:center;gap:4px;" id="damage-pagination"></div>
+      </div>
+      <div style="padding:14px 16px 0;border-top:1px solid var(--border);margin-top:12px;font-size:12px;color:var(--text-secondary);">
+        Tỷ lệ thất lạc TB: <strong style="color:var(--red)">0,5%</strong> &nbsp;|&nbsp; Tỷ lệ hư hỏng TB: <strong>1,6%</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title">Chi tiết</div>
+        <div class="modal-subtitle" id="modal-subtitle">Tuyến: Châu Á – Bắc Mỹ</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const CARRIERS = {
+  MAERSK: {
+    name: 'MAERSK', color: '#003E80', abbr: 'MSK',
+    otd: [84.0, 86.1, 89.7, 87.8, 89.5], otdCurrent: 88.5,
+    damage: [1.2, 1.1, 1.0, 0.7, 0.9], damageCurrent: 0.9,
+    loss: [0.6, 0.5, 0.7, 0.4, 0.5], lossCurrent: 0.5,
+    delivery: [27.5, 27.1, 26.9, 25.9, 26.2], deliveryCurrent: 26.2,
+    cost: [2560, 2420, 2480, 2360, 2260], costCurrent: 2280,
+    invoice: [93.1, 94.2, 94.8, 95.4, 95.6], invoiceCurrent: 98.2,
+    score: 91.0,
+    highlights: [
+      { icon: '💰', color: '#e6faf5', title: 'Chi phí thấp nhất', desc: 'MSC đang có chi phí trung bình / lô thấp nhất trong các nhà vận chuyển ($2.280), thấp hơn 8,3% so với trung bình toàn thị trường.' },
+      { icon: '📋', color: '#e8f0fd', title: 'Độ chính xác hóa đơn tăng lên', desc: 'Độ chính xác hóa đơn tăng 1,3% so với 5 tháng trước, phản ánh sự cải thiện trong quy trình chứng từ và đối soát.' },
+      { icon: '🕐', color: '#fff8e6', title: 'Thời gian giao hàng ổn định', desc: 'Thời gian giao hàng trung bình duy trì ổn định quanh mức 26 ngày và có xu hướng cải thiện.' },
+      { icon: '✅', color: '#e6faf5', title: 'Tỷ lệ hư hỏng thấp', desc: 'Tỷ lệ hư hỏng duy trì dưới 1%, thấp hơn mức trung bình thị trường (3,8%).' }
+    ]
+  },
+  MSC: {
+    name: 'MSC', color: '#2A2E87', abbr: 'MSC',
+    otd: [84.0, 86.1, 89.7, 87.8, 89.5], otdCurrent: 88.5,
+    damage: [1.2, 1.1, 1.0, 0.7, 0.9], damageCurrent: 0.9,
+    loss: [0.6, 0.5, 0.7, 0.4, 0.5], lossCurrent: 0.5,
+    delivery: [27.5, 27.1, 26.9, 25.9, 26.2], deliveryCurrent: 26.2,
+    cost: [2560, 2420, 2480, 2360, 2260], costCurrent: 2280,
+    invoice: [93.1, 94.2, 94.8, 95.4, 95.6], invoiceCurrent: 95.6,
+    score: 86.2,
+    highlights: [
+      { icon: '💰', color: '#e6faf5', title: 'Chi phí thấp nhất', desc: 'MSC đang có chi phí trung bình / lô thấp nhất trong các nhà vận chuyển ($2.280), thấp hơn 8,3% so với trung bình toàn thị trường.' },
+      { icon: '📋', color: '#e8f0fd', title: 'Độ chính xác hóa đơn tăng lên', desc: 'Độ chính xác hóa đơn tăng 1,3% so với 5 tháng trước.' },
+      { icon: '🕐', color: '#fff8e6', title: 'Thời gian giao hàng ổn định', desc: 'Thời gian giao hàng trung bình duy trì ổn định quanh mức 26 ngày.' },
+      { icon: '✅', color: '#e6faf5', title: 'Tỷ lệ hư hỏng thấp', desc: 'Tỷ lệ hư hỏng duy trì dưới 1%, thấp hơn mức trung bình thị trường.' }
+    ]
+  },
+  CMA: {
+    name: 'CMA CGM', color: '#E84142', abbr: 'CMA',
+    otd: [82.0, 84.0, 86.0, 84.5, 85.2], otdCurrent: 85.2,
+    damage: [1.3, 1.2, 1.1, 1.0, 1.1], damageCurrent: 1.1,
+    loss: [1.8, 1.9, 1.7, 1.8, 1.8], lossCurrent: 1.8,
+    delivery: [28.0, 27.8, 27.5, 27.9, 27.8], deliveryCurrent: 27.8,
+    cost: [2240, 2220, 2210, 2200, 2210], costCurrent: 2210,
+    invoice: [91.0, 92.0, 93.0, 92.5, 93.1], invoiceCurrent: 93.1,
+    score: 82.4,
+    highlights: [
+      { icon: '💰', color: '#e6faf5', title: 'Chi phí cạnh tranh', desc: 'CMA CGM có chi phí $2.210, thấp hơn trung bình thị trường $2.345.' },
+      { icon: '📈', color: '#e8f0fd', title: 'OTD ổn định', desc: 'Tỷ lệ OTD đạt 85,2%, duy trì ổn định qua các tháng.' }
+    ]
+  },
+  ZIM: {
+    name: 'ZIM', color: '#1E3A8A', abbr: 'ZIM',
+    otd: [74.0, 73.0, 72.5, 71.8, 72.3], otdCurrent: 72.3,
+    damage: [3.5, 3.6, 3.8, 3.9, 3.8], damageCurrent: 3.8,
+    loss: [4.0, 4.2, 4.5, 4.4, 4.5], lossCurrent: 4.5,
+    delivery: [30.0, 30.5, 31.0, 31.2, 31.4], deliveryCurrent: 31.4,
+    cost: [2700, 2690, 2680, 2675, 2680], costCurrent: 2680,
+    invoice: [87.0, 87.2, 87.3, 87.4, 87.4], invoiceCurrent: 87.4,
+    score: 64.8,
+    highlights: [
+      { icon: '⚠️', color: '#fff0f3', title: 'Tỷ lệ hư hỏng cao', desc: 'Tỷ lệ hư hỏng 3,8% cao nhất trong tất cả nhà vận chuyển, gấp 3,5 lần trung bình thị trường.' },
+      { icon: '📉', color: '#fff0f3', title: 'OTD thấp nhất', desc: 'Tỷ lệ OTD chỉ đạt 72,3%, thấp hơn 14,4 điểm % so với trung bình tuyến 86,7%.' },
+      { icon: '🕐', color: '#fff8e6', title: 'Giao hàng chậm nhất', desc: 'Thời gian giao hàng trung bình 31,4 ngày, tăng 2,1 ngày so với 5 tháng trước.' }
+    ]
+  },
+  TOTAL: { name: 'Tổng quan', color: '#1e56c8' }
+};
+
+const MONTHS = ['01/2024','02/2024','03/2024','04/2024','05/2024'];
+
+const MODAL_DATA = {
+  otd: {
+    title: 'ĐIỂM HIỆU SUẤT THEO TUYẾN ĐƯỜNG',
+    subtitle: 'So sánh hiệu suất nhà vận chuyển trên tuyến Châu Á – Bắc Mỹ',
+    metrics: [
+      { value: 'otd', label: 'OTD (%)', def: 'On-time Delivery: Tỷ lệ giao hàng đúng hạn', unit: '%', data: [{name:'MAERSK',val:93.1,abbr:'MSK',color:'#003E80'},{name:'MSC',val:88.5,abbr:'MSC',color:'#2A2E87'},{name:'CMA CGM',val:85.2,abbr:'CMA',color:'#E84142'},{name:'HAPAG-LLOYD',val:81.3,abbr:'HL',color:'#E86800'},{name:'ONE',val:79.6,abbr:'ONE',color:'#E2003D'},{name:'COSCO SHIPPING',val:77.4,abbr:'COS',color:'#CC0000'},{name:'EVERGREEN',val:74.1,abbr:'EVG',color:'#00953B'},{name:'HMM',val:72.0,abbr:'HMM',color:'#00205C'},{name:'ZIM',val:72.3,abbr:'ZIM',color:'#1E3A8A'}] },
+      { value: 'cost', label: 'Chi phí trung bình / lô (US$)', def: 'Average Cost per Shipment: Tổng chi phí trung bình cho mỗi lô hàng (US$)', unit: '$', data: [{name:'MSC',val:2280,abbr:'MSC',color:'#2A2E87'},{name:'MAERSK',val:2420,abbr:'MSK',color:'#003E80'},{name:'HAPAG-LLOYD',val:2420,abbr:'HL',color:'#E86800'},{name:'CMA CGM',val:2210,abbr:'CMA',color:'#E84142'},{name:'ONE',val:2680,abbr:'ONE',color:'#E2003D'},{name:'COSCO SHIPPING',val:2790,abbr:'COS',color:'#CC0000'},{name:'EVERGREEN',val:2840,abbr:'EVG',color:'#00953B'},{name:'HMM',val:2950,abbr:'HMM',color:'#00205C'},{name:'ZIM',val:2680,abbr:'ZIM',color:'#1E3A8A'}] }
+    ]
+  },
+  score: { title: 'ĐIỂM HIỆU SUẤT TỔNG QUAN', subtitle: 'Điểm tổng hợp theo trọng số OTD, Hư hỏng, Thất lạc, Chi phí, Hóa đơn' },
+  damage: { title: 'TỶ LỆ TỔN THẤT / HƯ HỎNG', subtitle: 'Chi tiết tỷ lệ hư hỏng và thất lạc theo nhà vận chuyển' },
+  delivery: { title: 'THỜI GIAN GIAO HÀNG TRUNG BÌNH', subtitle: 'Số ngày giao hàng trung bình theo nhà vận chuyển' },
+  cost: { title: 'CHI PHÍ TRUNG BÌNH / LÔ', subtitle: 'Chi phí bình quân mỗi lô hàng (US$)' },
+  invoice: { title: 'ĐỘ CHÍNH XÁC HÓA ĐƠN', subtitle: 'Tỷ lệ hóa đơn chính xác theo nhà vận chuyển (%)' }
+};
+
+let currentPage = 'performance';
+let prevPage = null;
+
+function showPage(page) {
+  document.querySelectorAll('.main').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).style.display = 'flex';
+  const navItems = document.querySelectorAll('.nav-item');
+  if (page === 'performance') navItems[0].classList.add('active');
+  if (page === 'loss') navItems[1].classList.add('active');
+  if (page === 'report') navItems[2].classList.add('active');
+  if (page === 'kpi') navItems[3].classList.add('active');
+  currentPage = page;
+  if (page === 'kpi') renderKpiList();
+  animateBars();
+}
+
+function openCarrierDetail(key) {
+  const c = CARRIERS[key];
+  if (!c || key === 'TOTAL') return;
+  prevPage = currentPage;
+  document.querySelectorAll('.main').forEach(el => el.style.display = 'none');
+  document.getElementById('page-carrier').style.display = 'flex';
+
+  const months = MONTHS;
+  const maxH = 56;
+
+  const sparkBars = (data, color) => data.map((v, i) => {
+    const pct = (v / Math.max(...data)) * maxH;
+    return `<div class="spark-bar" style="height:${pct}px;background:${color}20;border-radius:3px 3px 0 0;flex:1;position:relative;cursor:pointer;" title="${months[i]}: ${v}" onmouseover="this.style.background='${color}'" onmouseout="this.style.background='${color}20'">
+      <span class="spark-label">${months[i].split('/')[0]}/${months[i].split('/')[1].slice(2)}</span>
+    </div>`;
+  }).join('');
+
+  const otdTrend = (c.otdCurrent - c.otd[0]).toFixed(1);
+  const delivTrend = (c.delivery[0] - c.deliveryCurrent).toFixed(1);
+
+  document.getElementById('carrier-content').innerHTML = `
+    <button class="back-btn" onclick="showPage('${prevPage}')">← Quay lại danh sách</button>
+    <div class="carrier-hero">
+      <div class="carrier-logo-lg" style="background:${c.color};color:white;font-size:13px;font-weight:800">${c.abbr}</div>
+      <div>
+        <div class="carrier-hero-name">${c.name}</div>
+        <div class="carrier-hero-sub">Hiệu suất chính tiết theo nhà vận chuyển</div>
+      </div>
+      <div style="margin-left:auto">
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px">ĐIỂM TỔNG THỂ</div>
+        <div style="font-family:'Teko',sans-serif;font-size:42px;font-weight:600;color:${c.score>=85?'var(--green)':c.score>=75?'var(--orange)':'var(--red)'}">${c.score} <span style="font-size:20px;color:var(--text-light)">/ 100</span></div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-metric-name">OTD (%) theo nhà vận chuyển <span class="tip">?</span></div>
+        <div class="detail-value ${c.otdCurrent>=85?'good':'warn'}">${c.otdCurrent}%</div>
+        <div class="detail-trend ${otdTrend>=0?'trend-up':'trend-down'}">${otdTrend>=0?'▲':'▼'} ${Math.abs(otdTrend)}% so với 5 tháng trước</div>
+        <div class="detail-sparkline" style="padding-bottom:20px">${sparkBars(c.otd, '#1e56c8')}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-metric-name">Tỷ lệ hư hỏng & Thất lạc (%)</div>
+        <div class="detail-value ${c.damageCurrent<2?'good':'warn'}">${(c.damageCurrent+c.lossCurrent).toFixed(1)}%</div>
+        <div class="detail-trend trend-up">▲ 0,1% so với 5 tháng trước</div>
+        <div class="detail-sparkline" style="padding-bottom:20px">${sparkBars(c.damage, '#ff4d6d')}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-metric-name">Thời gian giao hàng TB (Ngày)</div>
+        <div class="detail-value">${c.deliveryCurrent} <span style="font-size:18px;color:var(--text-secondary)">ngày</span></div>
+        <div class="detail-trend ${delivTrend>=0?'trend-up':'trend-down'}">${delivTrend>=0?'▼':'▲'} ${Math.abs(delivTrend)} ngày so với 5 tháng trước</div>
+        <div class="detail-sparkline" style="padding-bottom:20px">${sparkBars(c.delivery, '#f5a623')}</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-metric-name">Chi phí trung bình / lô (US$)</div>
+        <div class="detail-value">$${c.costCurrent.toLocaleString()}</div>
+        <div class="detail-trend trend-up">▼ $${(c.cost[0]-c.costCurrent).toLocaleString()} so với 5 tháng trước</div>
+        <div class="detail-sparkline" style="padding-bottom:20px">${sparkBars(c.cost, '#00c896')}</div>
+      </div>
+    </div>
+
+    <div class="market-compare">
+      <h3>Tổng quan so với trung bình thị trường (Tuyến: Châu Á – Bắc Mỹ)</h3>
+      <div class="compare-grid">
+        <div class="compare-item">
+          <div class="compare-label">OTD (%)</div>
+          <div class="compare-val">${c.otdCurrent}%</div>
+          <div class="compare-vs ${c.otdCurrent>=86.7?'vs-better':'vs-worse'}">${c.otdCurrent>=86.7?'↑':'↓'} vs TB: 86,7%</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">Tỷ lệ hư hỏng (%)</div>
+          <div class="compare-val">${c.damageCurrent}%</div>
+          <div class="compare-vs ${c.damageCurrent<=1.1?'vs-better':'vs-worse'}">${c.damageCurrent<=1.1?'↓':'↑'} vs TB: 1,1%</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">Thời gian giao hàng TB (Ngày)</div>
+          <div class="compare-val">${c.deliveryCurrent}</div>
+          <div class="compare-vs ${c.deliveryCurrent<=27.8?'vs-better':'vs-worse'}">${c.deliveryCurrent<=27.8?'↓':'↑'} vs TB: 27,8 ngày</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">Chi phí trung bình / lô (US$)</div>
+          <div class="compare-val">$${c.costCurrent.toLocaleString()}</div>
+          <div class="compare-vs ${c.costCurrent<=2345?'vs-better':'vs-worse'}">${c.costCurrent<=2345?'↓':'↑'} vs TB: $2.345</div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">Độ chính xác hóa đơn (%)</div>
+          <div class="compare-val">${c.invoiceCurrent}%</div>
+          <div class="compare-vs ${c.invoiceCurrent>=94.1?'vs-better':'vs-worse'}">${c.invoiceCurrent>=94.1?'↑':'↓'} vs TB: 94,1%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlights-card">
+      <h3>Thông tin nổi bật <span class="tip">?</span></h3>
+      ${c.highlights.map(h => `
+        <div class="highlight-item">
+          <div class="hl-icon" style="background:${h.color};font-size:18px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center">${h.icon}</div>
+          <div>
+            <div class="hl-title">${h.title}</div>
+            <div class="hl-desc">${h.desc}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="font-size:11px;color:var(--text-secondary);margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+      Ghi chú: Dữ liệu được tính với trọng số: OTD (40%), Hư hỏng (25%), Thất lạc (15%), Chi phí (10%) và Độ chính xác hóa đơn (10%).
+    </div>
+  `;
+}
+
+function openModal(type) {
+  const data = MODAL_DATA[type];
+  if (!data) return;
+
+  document.getElementById('modal-title').textContent = data.title;
+  document.getElementById('modal-subtitle').textContent = data.subtitle;
+
+  let bodyHTML = '';
+
+  if (type === 'otd') {
+    const metrics = data.metrics;
+    const defaultMetric = metrics[0];
+    bodyHTML = `
+      <div class="modal-filter-row">
+        <label>Chọn tiêu chí đánh giá</label>
+        <select class="metric-select" onchange="switchMetric(this.value)" id="metric-sel">
+          ${metrics.map(m => `<option value="${m.value}">${m.label}</option>`).join('')}
+        </select>
+      </div>
+      <div class="metric-desc">
+        <div class="metric-name" id="m-name">${defaultMetric.label}</div>
+        <div class="metric-def" id="m-def">${defaultMetric.def}</div>
+      </div>
+      <div id="metric-table">${buildMetricTable(defaultMetric)}</div>
+      <div class="modal-footer">Điểm được tính với trọng số: OTD (40%), Hư hỏng (25%), Thất lạc (15%), Chi phí (10%) và Độ chính xác hóa đơn (10%).</div>
+    `;
+    document.getElementById('modal-body').innerHTML = bodyHTML;
+    window._modalMetrics = metrics;
+  } else {
+    // Generic modal
+    const rows = [
+      {name:'MAERSK',abbr:'MSK',color:'#003E80',val:getModalVal(type,'MAERSK')},
+      {name:'MSC',abbr:'MSC',color:'#2A2E87',val:getModalVal(type,'MSC')},
+      {name:'CMA CGM',abbr:'CMA',color:'#E84142',val:getModalVal(type,'CMA')},
+      {name:'HAPAG-LLOYD',abbr:'HL',color:'#E86800',val:getModalVal(type,'HAPAG')},
+      {name:'ONE',abbr:'ONE',color:'#E2003D',val:getModalVal(type,'ONE')},
+      {name:'COSCO SHIPPING',abbr:'COS',color:'#CC0000',val:getModalVal(type,'COSCO')},
+      {name:'EVERGREEN',abbr:'EVG',color:'#00953B',val:getModalVal(type,'EVERGREEN')},
+      {name:'HMM',abbr:'HMM',color:'#00205C',val:getModalVal(type,'HMM')},
+      {name:'ZIM',abbr:'ZIM',color:'#1E3A8A',val:getModalVal(type,'ZIM')},
+    ];
+    const maxVal = Math.max(...rows.map(r=>r.val));
+    const sorted = type === 'cost' || type === 'delivery' ? [...rows].sort((a,b)=>a.val-b.val) : [...rows].sort((a,b)=>b.val-a.val);
+    bodyHTML = `
+      <div class="modal-table">
+        <div class="modal-table-header" style="grid-template-columns:40px 1fr 1fr 80px">
+          <span>Hạng</span><span>Nhà vận chuyển</span><span>Biểu đồ</span><span style="text-align:right">Giá trị</span>
+        </div>
+        ${sorted.map((r,i) => `
+          <div class="modal-table-row" style="grid-template-columns:40px 1fr 1fr 80px" onclick="closeModal();openCarrierDetail('${r.abbr==='MSK'?'MAERSK':r.abbr==='MSC'?'MSC':r.abbr==='CMA'?'CMA':'ZIM'}')">
+            <div class="modal-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div>
+            <div class="modal-carrier">
+              <div class="carrier-logo-md" style="background:${r.color};color:white;font-size:9px;font-weight:800">${r.abbr}</div>
+              <span style="font-size:13px;font-weight:600">${r.name}</span>
+            </div>
+            <div class="modal-bar-track">
+              <div class="modal-bar-fill ${i===sorted.length-1?'last':''}" style="width:${(r.val/maxVal)*100}%"></div>
+            </div>
+            <div class="modal-value">${formatVal(type, r.val)}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="modal-footer">Điểm được tính với trọng số: OTD (40%), Hư hỏng (25%), Thất lạc (15%), Chi phí (10%) và Độ chính xác hóa đơn (10%).</div>
+    `;
+    document.getElementById('modal-body').innerHTML = bodyHTML;
+  }
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function getModalVal(type, key) {
+  const defaults = {
+    score: {MAERSK:91.0,MSC:86.2,CMA:82.4,HAPAG:78.1,ONE:74.5,COSCO:72.0,EVERGREEN:70.3,HMM:68.1,ZIM:64.8},
+    damage: {MAERSK:1.8,MSC:2.4,CMA:2.9,HAPAG:3.0,ONE:3.5,COSCO:3.8,EVERGREEN:4.0,HMM:4.2,ZIM:8.3},
+    delivery: {MAERSK:27.1,MSC:26.2,CMA:27.8,HAPAG:28.5,ONE:29.0,COSCO:29.5,EVERGREEN:30.0,HMM:30.5,ZIM:31.4},
+    cost: {MAERSK:2420,MSC:2280,CMA:2210,HAPAG:2350,ONE:2500,COSCO:2600,EVERGREEN:2700,HMM:2800,ZIM:2680},
+    invoice: {MAERSK:98.2,MSC:95.6,CMA:93.1,HAPAG:91.5,ONE:90.0,COSCO:89.5,EVERGREEN:88.0,HMM:87.5,ZIM:87.4}
+  };
+  return (defaults[type]||{})[key] || 0;
+}
+
+function formatVal(type, v) {
+  if (type === 'cost') return '$' + v.toLocaleString();
+  if (type === 'delivery') return v.toFixed(1);
+  if (type === 'damage') return v.toFixed(1) + '%';
+  return v.toFixed(1);
+}
+
+function buildMetricTable(metric) {
+  const maxVal = Math.max(...metric.data.map(d=>d.val));
+  const sorted = metric.value === 'cost' ? [...metric.data].sort((a,b)=>a.val-b.val) : [...metric.data].sort((a,b)=>b.val-a.val);
+  return `
+    <div class="modal-table">
+      <div class="modal-table-header" style="grid-template-columns:40px 1fr 1fr 120px">
+        <span>Hạng</span><span>Nhà vận chuyển</span><span>Biểu đồ</span><span style="text-align:right">${metric.label}</span>
+      </div>
+      ${sorted.map((r,i)=>`
+        <div class="modal-table-row" style="grid-template-columns:40px 1fr 1fr 120px">
+          <div class="modal-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div>
+          <div class="modal-carrier">
+            <div class="carrier-logo-md" style="background:${r.color};color:white;font-size:9px;font-weight:800">${r.abbr}</div>
+            <span style="font-size:13px;font-weight:600">${r.name}</span>
+          </div>
+          <div class="modal-bar-track">
+            <div class="modal-bar-fill ${i===sorted.length-1?'last':''}" style="width:${(r.val/maxVal)*100}%"></div>
+          </div>
+          <div class="modal-value">${metric.unit==='$'?'$'+r.val.toLocaleString():r.val.toFixed(1)+'%'}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function switchMetric(val) {
+  const m = window._modalMetrics.find(x=>x.value===val);
+  if (!m) return;
+  document.getElementById('m-name').textContent = m.label;
+  document.getElementById('m-def').textContent = m.def;
+  document.getElementById('metric-table').innerHTML = buildMetricTable(m);
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function animateBars() {
+  // Trigger CSS transitions
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0';
+      setTimeout(() => { el.style.width = w; }, 50);
+    });
+  }, 100);
+}
+
+// ===================== DAMAGE DETAIL MODAL =====================
+const DAMAGE_DATA = [
+  {name:'MAERSK',abbr:'MSK',color:'#003E80',damage:18,damageRate:0.6,loss:4,lossRate:0.1},
+  {name:'MSC',abbr:'MSC',color:'#2A2E87',damage:22,damageRate:0.9,loss:8,lossRate:0.3},
+  {name:'CMA CGM',abbr:'CMA',color:'#E84142',damage:26,damageRate:1.1,loss:10,lossRate:0.4},
+  {name:'HAPAG-LLOYD',abbr:'HL',color:'#E86800',damage:30,damageRate:1.3,loss:12,lossRate:0.5},
+  {name:'ONE',abbr:'ONE',color:'#E2003D',damage:28,damageRate:1.2,loss:9,lossRate:0.4},
+  {name:'COSCO',abbr:'COS',color:'#CC0000',damage:35,damageRate:1.5,loss:14,lossRate:0.6},
+  {name:'EVERGREEN',abbr:'EVG',color:'#00953B',damage:32,damageRate:1.4,loss:11,lossRate:0.5},
+  {name:'HMM',abbr:'HMM',color:'#00205C',damage:29,damageRate:1.2,loss:10,lossRate:0.4},
+  {name:'YANG MING',abbr:'YML',color:'#003DA5',damage:31,damageRate:1.3,loss:13,lossRate:0.5},
+  {name:'PIL',abbr:'PIL',color:'#004B87',damage:27,damageRate:1.1,loss:8,lossRate:0.3},
+  {name:'OOCL',abbr:'OOC',color:'#C8102E',damage:33,damageRate:1.4,loss:12,lossRate:0.5},
+  {name:'K LINE',abbr:'KLN',color:'#003DA5',damage:34,damageRate:1.5,loss:15,lossRate:0.6},
+  {name:'MOL',abbr:'MOL',color:'#E8941A',damage:36,damageRate:1.6,loss:16,lossRate:0.7},
+  {name:'NYK',abbr:'NYK',color:'#003087',damage:37,damageRate:1.6,loss:17,lossRate:0.7},
+  {name:'WANHAI',abbr:'WHL',color:'#005A9E',damage:38,damageRate:1.7,loss:16,lossRate:0.7},
+  {name:'SINOTRANS',abbr:'SNT',color:'#C8102E',damage:34,damageRate:1.5,loss:13,lossRate:0.6},
+  {name:'HYUNDAI',abbr:'HMM2',color:'#001A72',damage:36,damageRate:1.6,loss:14,lossRate:0.6},
+  {name:'PACIFIC INT.',abbr:'PIL2',color:'#2968C8',damage:39,damageRate:1.7,loss:18,lossRate:0.8},
+  {name:'SAMUDERA',abbr:'SAM',color:'#006E51',damage:35,damageRate:1.5,loss:15,lossRate:0.7},
+  {name:'TS LINES',abbr:'TSL',color:'#1A5276',damage:37,damageRate:1.6,loss:16,lossRate:0.7},
+  {name:'GLOBAL FEEDER',abbr:'GFS',color:'#148F77',damage:38,damageRate:1.7,loss:17,lossRate:0.7},
+  {name:'ANTONG',abbr:'ATG',color:'#7D6608',damage:39,damageRate:1.8,loss:16,lossRate:0.7},
+  {name:'PACIFIC DIRECT',abbr:'PDL',color:'#922B21',damage:40,damageRate:1.8,loss:17,lossRate:0.7},
+  {name:'ZIM',abbr:'ZIM',color:'#1E3A8A',damage:40,damageRate:3.8,loss:18,lossRate:1.5},
+];
+const DAMAGE_PAGE_SIZE = 4;
+let damageCurrentPage = 1;
+
+function openDamageDetailModal() {
+  damageCurrentPage = 1;
+  renderDamageTable();
+  document.getElementById('damage-modal-overlay').classList.add('open');
+}
+
+function closeDamageModal() {
+  document.getElementById('damage-modal-overlay').classList.remove('open');
+}
+
+function renderDamageTable() {
+  const total = DAMAGE_DATA.length;
+  const totalPages = Math.ceil(total / DAMAGE_PAGE_SIZE);
+  const start = (damageCurrentPage - 1) * DAMAGE_PAGE_SIZE;
+  const page = DAMAGE_DATA.slice(start, start + DAMAGE_PAGE_SIZE);
+
+  const rateColor = (rate, isLoss) => {
+    if (isLoss) return rate < 0.4 ? 'var(--green)' : rate < 0.8 ? 'var(--orange)' : 'var(--red)';
+    return rate < 1.0 ? 'var(--green)' : rate < 2.0 ? 'var(--orange)' : 'var(--red)';
+  };
+
+  document.getElementById('damage-detail-tbody').innerHTML = page.map((r, i) => `
+    <tr style="border-bottom:1px solid var(--border);transition:background .15s;" onmouseover="this.style.background='var(--surface-2)'" onmouseout="this.style.background=''">
+      <td style="padding:10px 16px;font-size:13px;font-weight:700;color:var(--text-light)">${start + i + 1}</td>
+      <td style="padding:10px 16px;">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:7px;background:${r.color};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:white;flex-shrink:0">${r.abbr}</div>
+          <span style="font-size:13px;font-weight:600">${r.name}</span>
+        </div>
+      </td>
+      <td style="padding:10px 16px;text-align:center;font-size:13px;font-weight:600">${r.damage}</td>
+      <td style="padding:10px 16px;text-align:center;font-size:13px;font-weight:700;color:${rateColor(r.damageRate,false)}">${r.damageRate.toFixed(1).replace('.',',')}%</td>
+      <td style="padding:10px 16px;text-align:center;font-size:13px;font-weight:600">${r.loss}</td>
+      <td style="padding:10px 16px;text-align:center;font-size:13px;font-weight:700;color:${rateColor(r.lossRate,true)}">${r.lossRate.toFixed(1).replace('.',',')}%</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('damage-page-info').textContent = `Hiển thị ${start+1} – ${Math.min(start+DAMAGE_PAGE_SIZE, total)} / ${total} nhà vận chuyển`;
+
+  // Pagination
+  let pages = [];
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || Math.abs(p - damageCurrentPage) <= 1) pages.push(p);
+    else if (pages[pages.length-1] !== '...') pages.push('...');
+  }
+  document.getElementById('damage-pagination').innerHTML = `
+    <button onclick="changeDamagePage(${damageCurrentPage-1})" ${damageCurrentPage===1?'disabled':''} style="width:30px;height:30px;border:1.5px solid var(--border);border-radius:6px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-secondary);">‹</button>
+    ${pages.map(p => p === '...' ? `<span style="padding:0 4px;color:var(--text-light)">···</span>` :
+      `<button onclick="changeDamagePage(${p})" style="width:30px;height:30px;border:1.5px solid ${p===damageCurrentPage?'var(--blue)':'var(--border)'};border-radius:6px;background:${p===damageCurrentPage?'var(--blue)':'white'};color:${p===damageCurrentPage?'white':'var(--text-secondary)'};cursor:pointer;font-size:13px;font-weight:600;">${p}</button>`
+    ).join('')}
+    <button onclick="changeDamagePage(${damageCurrentPage+1})" ${damageCurrentPage===totalPages?'disabled':''} style="width:30px;height:30px;border:1.5px solid var(--border);border-radius:6px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-secondary);">›</button>
+  `;
+}
+
+function changeDamagePage(p) {
+  const total = DAMAGE_DATA.length;
+  const totalPages = Math.ceil(total / DAMAGE_PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  damageCurrentPage = p;
+  renderDamageTable();
+}
+
+// ===================== KPI CONFIG =====================
+let KPI_LIST = [
+  {id:1,name:'Giao hàng đúng hạn (OTD)',desc:'Tỷ lệ đơn hàng được giao đúng hoặc trước ngày cam kết.',weight:35,threshold:'>95%',formula:'Số đơn giao đúng hạn / Tổng số đơn',formulaDesc:'Tổng số đơn giao đúng hạn chia cho tổng số đơn'},
+  {id:2,name:'Thời gian vận chuyển',desc:'Thời gian vận chuyển trung bình từ khi tàu rời cảng đến khi giao hàng.',weight:25,threshold:'≤25 ngày',formula:'Thời gian vận chuyển trung bình',formulaDesc:'Trung bình cộng của thời gian vận chuyển tất cả lô hàng'},
+  {id:3,name:'Tỷ lệ hư hỏng / thất lạc',desc:'Tỷ lệ đơn hàng bị báo cáo hư hỏng hoặc thất lạc.',weight:25,threshold:'<1%',formula:'Số đơn hư hỏng / Tổng số đơn',formulaDesc:'Tổng số đơn hư hỏng chia cho tổng số đơn'},
+  {id:4,name:'Chi phí & Giá cả',desc:'Chi phí trung bình mỗi lô hàng so với chi phí mục tiêu.',weight:10,threshold:'≤ 2.350 USS$ / lô hàng',formula:'Tổng chi phí / Tổng số lô hàng',formulaDesc:'Tổng chi phí chia cho tổng số lô hàng.'},
+  {id:5,name:'Độ chính xác hóa đơn',desc:'Tỷ lệ đơn hàng có hóa đơn chính xác.',weight:5,threshold:'≥98%',formula:'Số hóa đơn chính xác / Tổng số hóa đơn',formulaDesc:'Số hóa đơn không có sai sót chia cho tổng số hóa đơn'},
+];
+let editingKpiId = null;
+let nextKpiId = 6;
+
+function renderKpiList() {
+  const total = KPI_LIST.reduce((s,k)=>s+k.weight, 0);
+  const tw = document.getElementById('total-weight');
+  if (tw) {
+    tw.textContent = total + '%';
+    tw.style.color = total === 100 ? 'var(--green)' : 'var(--red)';
+  }
+  const container = document.getElementById('kpi-list');
+  if (!container) return;
+  container.innerHTML = KPI_LIST.map((k,i) => `
+    <div style="display:grid;grid-template-columns:1fr 1.5fr 100px 1fr 120px;padding:14px 16px;border-bottom:1px solid var(--border);gap:12px;align-items:center;font-size:13px;${editingKpiId===k.id?'background:var(--blue-pale);':''}" id="kpi-row-${k.id}">
+      <div>
+        <div style="font-weight:600;color:var(--text-primary)">${i+1}. ${k.name}</div>
+      </div>
+      <div style="color:var(--text-secondary);font-size:12px;line-height:1.4">${k.desc}</div>
+      <div style="text-align:center;">
+        <div style="display:inline-block;background:var(--blue-pale);color:var(--blue);font-weight:700;font-size:13px;padding:4px 12px;border-radius:20px;">${k.weight}</div>
+      </div>
+      <div>
+        <span style="background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--text-primary)">${k.threshold}</span>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="openKpiEdit(${k.id})" style="background:var(--blue);color:white;border:none;border-radius:6px;padding:5px 12px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">Sửa</button>
+        <button onclick="deleteKpi(${k.id})" style="background:var(--red-pale);color:var(--red);border:1px solid var(--red);border-radius:6px;padding:5px 10px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;">Xóa</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openKpiEdit(id) {
+  editingKpiId = id;
+  const panel = document.getElementById('kpi-edit-panel');
+  const titleEl = document.getElementById('edit-kpi-title');
+  if (id === null) {
+    // new KPI
+    titleEl.textContent = 'KPI MỚI';
+    document.getElementById('edit-name').value = '';
+    document.getElementById('edit-desc').value = '';
+    document.getElementById('edit-weight').value = '';
+    document.getElementById('edit-threshold').value = '>95%';
+    document.getElementById('edit-formula').value = 'Số đơn giao đúng hạn / Tổng số đơn';
+    document.getElementById('edit-formula-desc').value = '';
+  } else {
+    const k = KPI_LIST.find(x=>x.id===id);
+    if (!k) return;
+    titleEl.textContent = k.name.toUpperCase();
+    document.getElementById('edit-name').value = k.name;
+    document.getElementById('edit-desc').value = k.desc;
+    document.getElementById('edit-weight').value = k.weight;
+    document.getElementById('edit-threshold').value = k.threshold;
+    document.getElementById('edit-formula').value = k.formula;
+    document.getElementById('edit-formula-desc').value = k.formulaDesc;
+  }
+  renderKpiList();
+}
+
+function saveKpi() {
+  const name = document.getElementById('edit-name').value.trim();
+  const desc = document.getElementById('edit-desc').value.trim();
+  const weight = parseInt(document.getElementById('edit-weight').value) || 0;
+  const threshold = document.getElementById('edit-threshold').value;
+  const formula = document.getElementById('edit-formula').value;
+  const formulaDesc = document.getElementById('edit-formula-desc').value.trim();
+  if (!name) { alert('Vui lòng nhập tên KPI!'); return; }
+  if (editingKpiId === null) {
+    KPI_LIST.push({id:nextKpiId++, name, desc, weight, threshold, formula, formulaDesc});
+  } else {
+    const k = KPI_LIST.find(x=>x.id===editingKpiId);
+    if (k) { k.name=name; k.desc=desc; k.weight=weight; k.threshold=threshold; k.formula=formula; k.formulaDesc=formulaDesc; }
+  }
+  editingKpiId = null;
+  document.getElementById('edit-kpi-title').textContent = '---';
+  renderKpiList();
+}
+
+function deleteKpi(id) {
+  if (!confirm('Bạn có chắc muốn xóa KPI này?')) return;
+  KPI_LIST = KPI_LIST.filter(k=>k.id!==id);
+  if (editingKpiId === id) { editingKpiId = null; document.getElementById('edit-kpi-title').textContent = '---'; }
+  renderKpiList();
+}
+
+function cancelKpiEdit() {
+  editingKpiId = null;
+  document.getElementById('edit-kpi-title').textContent = '---';
+  renderKpiList();
+}
+
+// ===================== INIT =====================
+window.addEventListener('load', () => {
+  setTimeout(animateBars, 300);
+  renderKpiList();
+});
+</script>
+</body>
+</html>
